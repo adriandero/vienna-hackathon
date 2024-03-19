@@ -4,6 +4,7 @@
       <Sidebar :items="sidebarItems" @update="changePage($event)" />
       
       <ShareGoodList v-if="currentPage === 'share'"></ShareGoodList>
+      <StatsView v-if="currentPage === 'stats'"></StatsView>
     </v-layout>
   </v-app>
 </template>
@@ -12,6 +13,7 @@
 import Sidebar from '@/components/Sidebar.vue';
 import ShareGoodList from '@/components/ShareGoodList.vue';
 import { ref, defineProps, onBeforeMount } from 'vue';
+import StatsView from '@/views/StoreStatsView.vue';
 
 const sidebarItems = [
   { icon: 'mdi-heart', title: 'Lebensmittel freigeben', value: 'share' },
