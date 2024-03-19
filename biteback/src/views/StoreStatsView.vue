@@ -39,10 +39,10 @@
                 <v-col cols="12" sm="12" md="6" lg="6">
                     <v-card class="chart-card">
                         <v-card-title>
-                            Lebensmittel nach Categorie
+                            Lebensmittel nach Kategorie
                         </v-card-title>
                         <v-card-text>
-                            Categorie der geretteten Lebensmittel in Prozent
+                            Kategorie der geretteten Lebensmittel in Prozent
                         </v-card-text>
                         <v-divider></v-divider>
                         <v-card-text style="height: 500px;"> <!-- Adjust the height as needed -->
