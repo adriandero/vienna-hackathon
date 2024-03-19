@@ -25,6 +25,9 @@
                         <v-card-title>
                             Anzahl Abholnungen pro Monat
                         </v-card-title>
+                        <v-card-text>
+                            Übersicht der Anzahl an Abhlungen durch Wohltätigkeitsorganisationen
+                        </v-card-text>
                         <v-divider></v-divider>
                         <v-card-text>
                             <!-- Line Chart Component -->
@@ -86,7 +89,7 @@ export default {
                 responsive: true
             },
             barChartData2: {
-                labels: ['Mon.', 'Din.', 'Mit', 'Don', 'Fri', 'Sam', 'Son'],
+                labels: ['Mo.', 'Di.', 'Mi', 'Do.', 'Fr.', 'Sa.', 'So.'],
                 datasets: [{ label: '', backgroundColor: '#3e95cd', data: [3, 5, 4, 9, 10, 3, 0] }]
             },
             barChartOptions2: {
@@ -100,8 +103,8 @@ export default {
                 responsive: true
             },
             pieChartData: {
-                labels: ['Brot', 'Fleisch', 'Früchte'],
-                datasets: [{ backgroundColor: ['#f87979', '#3e95cd', '#e8c3b9'], data: [30, 25, 45] }]
+                labels: ['Brot', 'Fleisch', 'Obst', 'Gemüse'],
+                datasets: [{ backgroundColor: ['#a86f32', '#f87979', '#bad448', '#32a852'], data: [30, 25, 15, 30] }]
             },
             pieChartOptions: {
                 responsive: true

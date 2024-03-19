@@ -20,7 +20,7 @@ import MessageView from "@/views/MessageView.vue";
 const sidebarItems = [
   { icon: 'mdi-heart', title: 'Lebensmittel freigeben', value: 'share' },
   { icon: 'mdi-bell', title: 'Benachrichtigungen', value: 'notifications' },
-  { icon: 'mdi-database', title: 'CO₂ Statistik', value: 'stats' }
+  { icon: 'mdi-database', title: 'Statistiken', value: 'stats' }
 ];
 
 const currentPage = ref(sidebarItems[0].value);

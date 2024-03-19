@@ -1,8 +1,8 @@
 <template>
     <v-main>
       <v-container>
-        <v-card :class="elevation-0">
-          <v-card-title>Notifications ✉</v-card-title>
+        <v-card>
+          <v-card-title>Benachrichtigungen</v-card-title>
           <v-card-text>
             <v-data-table :items="messages"></v-data-table>
           </v-card-text>
