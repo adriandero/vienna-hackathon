@@ -1,5 +1,4 @@
 <script setup>
-import TheWelcome from '../components/TheWelcome.vue'
 </script>
 
 <template>
@@ -11,6 +10,5 @@ import TheWelcome from '../components/TheWelcome.vue'
       title="Vuetify"
       text="Vuetify works yes!"
     ></v-alert>
-    <TheWelcome />
   </main>
 </template>
