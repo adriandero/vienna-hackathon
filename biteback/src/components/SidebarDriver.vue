@@ -33,7 +33,12 @@
 
     <template v-slot:append>
       <div class="pa-2">
-        <v-btn color="red-lighten-1" prepend-icon="mdi-logout-variant" variant="tonal" block
+        <v-btn
+          color="red-lighten-1"
+          prepend-icon="mdi-logout-variant"
+          variant="tonal"
+          block
+          @click="state.mode = null"
           >Abmelden</v-btn
         >
       </div>
@@ -53,6 +58,7 @@
 
 <script setup>
 import { ref, defineProps, onBeforeMount } from 'vue'
+import { state } from '@/store/index.js'
 
 const props = defineProps({
   items: Array
