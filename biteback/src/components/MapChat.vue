@@ -18,10 +18,13 @@ export default {
       charityLocation: [16.38743271601089, 48.222201370103164], // Initial truck location
 
       possibleMarkers: [
-        { coordinates: [16.384180198441587, 48.217857173410586], name: 'billa' },
-        { coordinates: [16.411282619060376, 48.21241924127161], name: 'billa' },
-        { coordinates: [16.387812393873663, 48.22006347119073], name: 'penny' },
-        { coordinates: [16.39961940110769, 48.22636510223389], name: 'penny' }
+        { coordinates: [16.384180198441587, 48.217857173410586], name: 'Billa' },
+        { coordinates: [16.411282619060376, 48.21241924127161], name: 'Billa' },
+        { coordinates: [16.39961940110769, 48.22636510223389], name: 'Penny' },
+        { coordinates: [16.405880131204587, 48.22494448995453], name: 'Penny' },
+        { coordinates: [16.39254569985874, 48.21084718356092], name: 'Billa' },
+        { coordinates: [16.39230698341627, 48.21905963174383], name: 'Billa' },
+        { coordinates: [16.39765137777517, 48.21935054476111], name: 'Billa' }
       ],
 
       chosenMarkers: [],
@@ -48,10 +51,6 @@ export default {
       this.addMarker(this.truckLocation, 'You', 'truck')
       this.addMarker(this.charityLocation, 'Charity', 'charity')
       this.createRoute(this.$props.shopNumber)
-      map.loadImage('/shop.png', function (error, image) {
-        if (error) throw error
-        map.addImage('ahpoehf', image)
-      })
     })
 
     map.on('click', (event) => {
@@ -82,14 +81,14 @@ export default {
     },
     addMarker(coordinates, title, className) {
       let markerElement = null
-      if (className == 'truck') {
-        markerElement = document.createElement('img')
-        markerElement.className = className
-        markerElement.src = 'public/shop.png' // Set the image source
-      } else {
-        markerElement = document.createElement('div')
-        markerElement.className = className
-      }
+      //   if (className == 'truck') {
+      //     markerElement = document.createElement('img')
+      //     markerElement.className = className
+      //     markerElement.src = 'public/shop.png' // Set the image source
+      //   } else {
+      markerElement = document.createElement('div')
+      markerElement.className = className
+      //   }
 
       const marker = new mapboxgl.Marker(markerElement)
         .setLngLat(coordinates)
@@ -213,9 +212,6 @@ export default {
         }
       })
     }
-  },
-  unmounted() {
-    this.map.remove()
   }
 }
 </script>
@@ -240,7 +236,13 @@ export default {
   border: 2px solid #fff; /* Optional: Add border */
 }
 .truck {
-  width: 15px;
-  height: 15px;
+  width: 0;
+  height: 0;
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  border-top: 15px solid #495057; /* Color of the triangle */
+  border-radius: 25%;
+  transform: rotate(180deg); /* Rotate the triangle to face down */
+  border-bottom: 2px solid #495057; /* Optional: Add border */
 }
 </style>
