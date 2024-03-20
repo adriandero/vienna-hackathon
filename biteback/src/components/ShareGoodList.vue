@@ -158,7 +158,14 @@ function startScanning() {
   codeReader.listVideoInputDevices().then(devices => {
     const id = devices.filter(device => device.label === selectedCam.value)[0].deviceId;
     console.log(selectedCam.value)
-    codeReader.decodeFromVideoDevice(id, 'video', (result, error) => {
+    codeReader.decodeOnceFromConstraints({
+      video: {
+        deviceId: id,
+        facingMode: 'environment',
+        focusMode: 'continuous',
+        frameRate: { ideal: 10, max: 15 },
+      }
+    }, 'video', (result, error) => {
       if (result) {
         scanResult.value = result.text;
       }
@@ -166,6 +173,17 @@ function startScanning() {
       if (error && !(error instanceof NotFoundException)) {
         scanResult.value = error
       }
+    }).catch(error => {
+      console.log("falling back to default scan.")
+      codeReader.decodeFromVideoDevice(id, 'video', (result, error) => {
+        if (result) {
+          scanResult.value = result.text;
+        }
+
+        if (error && !(error instanceof NotFoundException)) {
+          scanResult.value = error
+        }
+      })
     });
   });
 }
