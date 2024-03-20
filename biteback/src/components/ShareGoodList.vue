@@ -15,25 +15,26 @@
       </template>
 
       <template v-slot:actions>
-        <v-btn variant="tonal" class="me-auto" text="Manuelle Eingabe" disabled></v-btn>
+        <v-btn variant="tonal" class="me-auto" :text="manualEntryFormVisible ? 'Scan' : 'Manuelle Eingabe'" @click="manualEntryFormVisible = !manualEntryFormVisible"></v-btn>
         <v-btn variant="tonal" color="red-lighten-1" text="Abbruch" @click="scanDialog = false"></v-btn>
-        <v-btn v-if="scanResult === null" variant="tonal" color="green-lighten-1" text="Start"
+        <v-btn v-if="scanResult === null && manualEntryFormVisible == false" variant="tonal" color="green-lighten-1" text="Start"
           @click="startScanning()"></v-btn>
-        <v-btn v-if="scanResult !== null" variant="tonal" color="green-lighten-1" text="Weiter"
+        <v-btn v-if="scanResult !== null && manualEntryFormVisible == false" variant="tonal" color="green-lighten-1" text="Weiter"
           @click="createProduct()"></v-btn>
       </template>
 
-      <div class="mx-5 text-center d-block">
-        <!-- <v-select v-model="selectedCam" :items="cameras" label="Kamera">
-          <template v-slot:item="{ item }">
-            <v-list-item-title>{{ item.value.label }}</v-list-item-title>
-          </template>
-        </v-select> -->
+      <div v-if="!manualEntryFormVisible" class="mx-5 text-center d-block">
         <v-select v-model="selectedCam" :items="cameras" label="Kamera"></v-select>
         <video id="video" width="80%" height="200" style="border: 1px solid gray"></video>
         <p v-if="scanResult !== null" class="font-weight-bold">Code: <span class="text-color-green-lighten-1">{{
-    scanResult
-  }}</span></p>
+          scanResult
+        }}</span></p>
+      </div>
+
+      <!-- Manual Entry Form -->
+      <div v-if="manualEntryFormVisible" class="mx-5 text-center d-block">
+        <v-text-field v-model="productCode" label="Product Code"></v-text-field>
+        <v-btn variant="tonal" color="green-lighten-1" text="Manuelle Eingabe Übernehmen" @click="saveManualProduct()"></v-btn>
       </div>
     </v-card>
   </v-dialog>
@@ -127,6 +128,9 @@ const cameras = ref([]);
 const selectedCam = ref(null);
 const scanResult = ref(null);
 
+const manualEntryFormVisible = ref(false);
+const productCode = ref('');
+
 const productDialog = ref(false);
 const scannedProduct = ref(null);
 
@@ -184,7 +188,7 @@ function createProduct() {
   axios.get('https://world.openfoodfacts.org/api/v0/product/' + scanResult.value + '.json')
     .then(response => {
       if (response.data.product === undefined) {
-        alert('Produkt nicht in der internationalen Datenbank. Versuche ein anderes Produkt zu scannen.');
+        alert('Produkt nicht in der internationalen Datenbank. Versuche ein anderes Produkt zu scannen oder gebe es manuell ein.');
         return;
       }
       const product = response.data.product;
@@ -204,9 +208,19 @@ function saveProduct() {
     description: scannedProduct.value._keywords.toString()
   });
 
+  
+
   updateTotalCo2(); // todo: dirty fix
   productDialog.value = false;
 }
+
+function saveManualProduct() {
+  scanResult.value = productCode.value
+  createProduct()
+  this.manualEntryFormVisible = false;
+  productCode.value = ""  
+}
+
 </script>
 <script>
 import CO2Calculator from '@/components/StatsDialog.vue';
