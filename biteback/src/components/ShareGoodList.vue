@@ -109,11 +109,18 @@
 <script setup>
 import PickupGoodsToggle from '@/components/PickupGoodsToggle.vue';
 import { state } from '@/store/index.js';
-import { BrowserMultiFormatReader, NotFoundException } from '@zxing/library';
+import { BrowserMultiFormatReader, NotFoundException, BarcodeFormat, DecodeHintType } from '@zxing/library';
 import { ref, watch, onMounted } from 'vue';
 import axios from 'axios';
 
 let codeReader = new BrowserMultiFormatReader()
+
+const formats = [BarcodeFormat.UPC_A, BarcodeFormat.UPC_E, BarcodeFormat.EAN_13, BarcodeFormat.EAN_8]
+const hints = new Map()
+
+hints.set(DecodeHintType.POSSIBLE_FORMATS, formats)
+hints.set(DecodeHintType.TRY_HARDER, true)
+
 const scanDialog = ref(false);
 const co2dialog = ref(false);
 const cameras = ref([]);
