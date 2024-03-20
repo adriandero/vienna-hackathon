@@ -184,7 +184,6 @@ function createProduct() {
 }
 
 function saveProduct() {
-  console.log(scannedProduct)
   state.products.push({
     name: scannedProduct.value.brands + ' ' + scannedProduct.value.product_name,
     img: scannedProduct.value.image_url,
