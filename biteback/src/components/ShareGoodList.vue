@@ -53,7 +53,7 @@
         <v-btn variant="tonal" color="green-lighten-1" text="Ja" @click="saveProduct()"></v-btn>
       </template>
 
-      <div class="mx-5 text-center d-block">
+      <div v-if="scannedProduct !== null" class="mx-5 text-center d-block">
         <img class="align-self-cente" max-width="80%" max-height="80%" :src="scannedProduct.image_url"></img>
 
         <div>
@@ -113,7 +113,7 @@ import { BrowserMultiFormatReader, NotFoundException } from '@zxing/library';
 import { ref, watch, onMounted } from 'vue';
 import axios from 'axios';
 
-const codeReader = new BrowserMultiFormatReader()
+let codeReader = new BrowserMultiFormatReader()
 const scanDialog = ref(false);
 const co2dialog = ref(false);
 const cameras = ref([]);
@@ -147,6 +147,8 @@ watch(scanDialog, (value) => {
   if (!value) {
     codeReader.reset();
     scanResult.value = null;
+
+    codeReader = new BrowserMultiFormatReader();
   }
 })
 
@@ -174,6 +176,10 @@ function createProduct() {
 
   axios.get('https://world.openfoodfacts.org/api/v0/product/' + scanResult.value + '.json')
     .then(response => {
+      if(response.data.product === undefined) {
+        alert('Produkt nicht in der internationalen Datenbank. Versuche ein anderes Produkt zu scannen.');
+        return;
+      }
       const product = response.data.product;
       scannedProduct.value = product;
       productDialog.value = true;
