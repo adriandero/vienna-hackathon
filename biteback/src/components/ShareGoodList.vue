@@ -1,5 +1,8 @@
 <template>
   <!-- todo: extract to separate components -->
+  <v-dialog v-model="co2dialog">
+    <CO2Calculator :co2="totalCo2"/>
+  </v-dialog>
   <v-dialog v-model="scanDialog">
     <v-card class="align-self-center">
       <template v-slot:prepend>
@@ -61,6 +64,7 @@
   </v-dialog>
 
   <v-main>
+    
     <div v-if="state.products.length === 0" class="d-flex justify-center align-center h-100">
       <div class="bg-white rounded-lg d-block pa-3 text-center font-weight-bold" style="max-width: 75%;">
         <v-icon size="40" color="red-lighten-1" icon="mdi-gauge-empty"></v-icon>
@@ -92,7 +96,7 @@
     <div class="d-flex align-center w-100 bg-white rounded-lg px-2"
       :class="{ 'elevation-10': state.products.length > 5 }">
       <PickupGoodsToggle class="flex-fill"></PickupGoodsToggle>
-      <v-btn class="pa-0 mx-2" density="compact" variant="text">
+      <v-btn class="pa-0 mx-2" density="compact" variant="text" @click="co2dialog = true">
         <span class="text-caption text-grey-darken-3">{{ totalCo2.toFixed(2) }}kg Co₂</span>
         <v-icon  icon="mdi-help"></v-icon>
       </v-btn>
@@ -111,6 +115,7 @@ import axios from 'axios';
 
 const codeReader = new BrowserMultiFormatReader()
 const scanDialog = ref(false);
+const co2dialog = ref(false);
 const cameras = ref([]);
 const selectedCam = ref(null);
 const scanResult = ref(null);
@@ -190,4 +195,13 @@ function saveProduct() {
   updateTotalCo2(); // todo: dirty fix
   productDialog.value = false;
 }
+</script>
+<script>
+import CO2Calculator from '@/components/StatsDialog.vue';
+
+export default {
+  components: {
+    CO2Calculator
+  }
+};
 </script>

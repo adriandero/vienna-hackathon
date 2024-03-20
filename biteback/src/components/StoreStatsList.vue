@@ -9,7 +9,7 @@
                             Lebensmittel Einsparungen
                         </v-card-title>
                         <v-card-text>
-                            Lebensmittel Einsparungen über die letzten Monate in Kg.
+                            Lebensmittelverschwendung welches über die letzten Monate mit BiteBack verhindert werden konnte
                         </v-card-text>
                         <v-divider></v-divider>
                         <v-card-text>
@@ -23,15 +23,15 @@
                 <v-col cols="12" sm="12" md="6" lg="6">
                     <v-card class="chart-card">
                         <v-card-title>
-                            Anzahl Abholnungen pro Monat
+                            CO2 Einsparungen 
                         </v-card-title>
                         <v-card-text>
-                            Übersicht der Anzahl an Abhlungen durch Wohltätigkeitsorganisationen
+                            Monatliche Ansicht des mit BiteBack eingesparten CO2s für eine Billa Filiale in Wien 
                         </v-card-text>
                         <v-divider></v-divider>
                         <v-card-text>
                             <!-- Line Chart Component -->
-                            <Line id="line-chart" :options="lineChartOptions" :data="lineChartData" />
+                            <Line id="co2-chart" :options="lineChartOptionsCO" :data="lineChartDataCO" />
                         </v-card-text>
                     </v-card>
                 </v-col>
@@ -67,6 +67,26 @@
                     </v-card>
                 </v-col>
             </v-row>
+            <v-row>
+                <v-col cols="12" sm="12" md="6" lg="6">
+                    <v-card class="chart-card">
+                        <v-card-title>
+                            Anzahl Abholnungen pro Monat
+                        </v-card-title>
+                        <v-card-text>
+                            Übersicht der Anzahl an Abhlungen durch Wohltätigkeitsorganisationen
+                        </v-card-text>
+                        <v-divider></v-divider>
+                        <v-card-text>
+                            <!-- Line Chart Component -->
+                            <Line id="line-chart" :options="lineChartOptions" :data="lineChartData" />
+                        </v-card-text>
+                    </v-card>
+                </v-col>
+                <v-col cols="12" sm="12" md="6" lg="6">
+
+                </v-col>
+            </v-row>
         </v-container>
     </v-main>
 </template>
@@ -90,7 +110,7 @@ export default {
             },
             barChartData2: {
                 labels: ['Mo.', 'Di.', 'Mi', 'Do.', 'Fr.', 'Sa.', 'So.'],
-                datasets: [{ label: '', backgroundColor: '#3e95cd', data: [3, 5, 4, 9, 10, 3, 0] }]
+                datasets: [{ label: 'Anzahl Freigegebener Produkte', backgroundColor: '#3e95cd', data: [3, 5, 4, 9, 10, 3, 0] }]
             },
             barChartOptions2: {
                 responsive: true
@@ -100,6 +120,13 @@ export default {
                 datasets: [{ label: 'Abholungen', borderColor: '#3e95cd', data: [6, 9, 10] }]
             },
             lineChartOptions: {
+                responsive: true
+            },
+            lineChartDataCO: {
+                labels: ['Jan.', 'Feb.', 'März'],
+                datasets: [{ label: 'Tonnen CO2', borderColor: '#3e95cd', data: [8, 7, 10] }]
+            },
+            lineChartOptionsCO: {
                 responsive: true
             },
             pieChartData: {
