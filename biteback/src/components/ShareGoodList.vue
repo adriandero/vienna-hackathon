@@ -28,7 +28,9 @@
         </v-select> -->
         <v-select v-model="selectedCam" :items="cameras" label="Kamera"></v-select>
         <video id="video" width="80%" height="200" style="border: 1px solid gray"></video>
-        <p v-if="scanResult !== null" class="font-weight-bold">Code: <span class="text-color-green-lighten-1">{{ scanResult }}</span></p>
+        <p v-if="scanResult !== null" class="font-weight-bold">Code: <span class="text-color-green-lighten-1">{{
+    scanResult
+  }}</span></p>
       </div>
     </v-card>
   </v-dialog>
@@ -45,8 +47,7 @@
       <template v-slot:actions>
         <v-btn variant="tonal" class="me-auto" text="Manuelle Eingabe" disabled></v-btn>
         <v-btn variant="tonal" color="red-lighten-1" text="Abbruch" @click="productDialog = false"></v-btn>
-        <v-btn variant="tonal" color="green-lighten-1" text="Ja"
-          @click="saveProduct()"></v-btn>
+        <v-btn variant="tonal" color="green-lighten-1" text="Ja" @click="saveProduct()"></v-btn>
       </template>
 
       <div class="mx-5 text-center d-block">
@@ -67,7 +68,8 @@
         <p class="text-caption text-grey-darken-3">
           Es sind aktuell keine Lebensmittel eingetragen, das bedeutet, dass Abholorganisationen keine nähere
           Informationen haben, welche Lebensmittel bereitstehen. Es ist wünschenswert diese Information weiterzugeben um
-          Abholprozesse zu optimieren, ist jedoch keine Voraussetzung. <b>Nutze das "Scan" Symbol unten um Lebensmittel einzutragen.</b>
+          Abholprozesse zu optimieren, ist jedoch keine Voraussetzung. <b>Nutze das "Scan" Symbol unten um Lebensmittel
+            einzutragen.</b>
         </p>
       </div>
     </div>
@@ -90,6 +92,10 @@
     <div class="d-flex align-center w-100 bg-white rounded-lg px-2"
       :class="{ 'elevation-10': state.products.length > 5 }">
       <PickupGoodsToggle class="flex-fill"></PickupGoodsToggle>
+      <v-btn class="pa-0 mx-2" density="compact" variant="text">
+        <span class="text-caption text-grey-darken-3">{{ totalCo2.toFixed(2) }}kg Co₂</span>
+        <v-icon  icon="mdi-help"></v-icon>
+      </v-btn>
 
       <v-btn color="green-lighten-1" icon="mdi-qrcode-scan" variant="tonal" @click="scanDialog = true"></v-btn>
     </div>
@@ -100,7 +106,7 @@
 import PickupGoodsToggle from '@/components/PickupGoodsToggle.vue';
 import { state } from '@/store/index.js';
 import { BrowserMultiFormatReader, NotFoundException } from '@zxing/library';
-import { ref, watch } from 'vue';
+import { ref, watchEffect, onMounted } from 'vue';
 import axios from 'axios';
 
 const codeReader = new BrowserMultiFormatReader()
@@ -112,6 +118,14 @@ const scanResult = ref(null);
 const productDialog = ref(false);
 const scannedProduct = ref(null);
 
+const totalCo2 = ref(0);
+
+function updateTotalCo2() {
+  totalCo2.value = state.products.reduce((acc, product) => acc + (product.kcal / 2390) * 10 + 1, 0);
+}
+
+onMounted(() => updateTotalCo2())
+
 codeReader.listVideoInputDevices().then(devices => {
   cameras.value = devices.filter(device => device.kind == "videoinput").map(device => device.label);
   selectedCam.value = cameras.value[0];
@@ -121,9 +135,10 @@ codeReader.listVideoInputDevices().then(devices => {
 
 function deleteProduct(index) {
   state.products.splice(index, 1);
+  updateTotalCo2(); // todo: dirty fix
 }
 
-watch(scanDialog, (value) => {
+watchEffect(scanDialog, (value) => {
   if (!value) {
     codeReader.reset();
     scanResult.value = null;
@@ -164,12 +179,15 @@ function createProduct() {
 }
 
 function saveProduct() {
+  console.log(scannedProduct)
   state.products.push({
     name: scannedProduct.value.brands + ' ' + scannedProduct.value.product_name,
     img: scannedProduct.value.image_url,
+    kcal: (scannedProduct.value.nutriments['energy-kj'] / 4.184),
     description: scannedProduct.value._keywords.toString()
   });
 
+  updateTotalCo2(); // todo: dirty fix
   productDialog.value = false;
 }
 </script>

@@ -10,6 +10,7 @@ export const state = reactive({
             id: 'mnop78',
             name: "Grapes",
             img: null,
+            kcal: 100,
             description: "A nice grapes",
         }
     ],

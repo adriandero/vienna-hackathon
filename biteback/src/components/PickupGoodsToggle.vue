@@ -4,7 +4,6 @@
       <template v-slot:label><span class="font-weight-bold text-black">Abholbereitschaft</span></template>
     </v-switch>
   </div>
-
 </template>
 
 <script setup>
