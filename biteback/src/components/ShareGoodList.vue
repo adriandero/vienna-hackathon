@@ -110,7 +110,7 @@
 import PickupGoodsToggle from '@/components/PickupGoodsToggle.vue';
 import { state } from '@/store/index.js';
 import { BrowserMultiFormatReader, NotFoundException } from '@zxing/library';
-import { ref, watchEffect, onMounted } from 'vue';
+import { ref, watch, onMounted } from 'vue';
 import axios from 'axios';
 
 const codeReader = new BrowserMultiFormatReader()
@@ -143,7 +143,7 @@ function deleteProduct(index) {
   updateTotalCo2(); // todo: dirty fix
 }
 
-watchEffect(scanDialog, (value) => {
+watch(scanDialog, (value) => {
   if (!value) {
     codeReader.reset();
     scanResult.value = null;
