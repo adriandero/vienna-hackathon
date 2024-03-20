@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import { state } from '../store'
 import HomeView from '../views/HomeView.vue'
 import RegisterView from '../views/RegisterView.vue'
+import { watch } from 'vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -25,6 +26,14 @@ const router = createRouter({
       component: RegisterView
     }
   ]
+})
+
+watch(state, (state) => {
+  if (state.mode === null) {
+    router.replace({ name: 'register' })
+  } else {
+    router.replace({ name: 'home' })
+  }
 })
 
 export default router
