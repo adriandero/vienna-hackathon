@@ -1,12 +1,10 @@
 <template>
   <v-app class="bg-grey-lighten-5">
-    <v-layout>
-      <Sidebar :items="sidebarItems" @update="changePage($event)" />
+    <Sidebar :items="sidebarItems" @update="changePage($event)" />
       
       <ShareGoodList v-if="currentPage === 'share'"></ShareGoodList>
-      <StatsView v-if="currentPage === 'stats'"></StatsView>
-      <MessageView v-if="currentPage === 'notifications'"></MessageView>
-    </v-layout>
+      <MessageList v-if="currentPage === 'notifications'"></MessageList>
+      <StoreStatsList v-if="currentPage === 'stats'"></StoreStatsList>
   </v-app>
 </template>
 
@@ -14,8 +12,8 @@
 import Sidebar from '@/components/Sidebar.vue';
 import ShareGoodList from '@/components/ShareGoodList.vue';
 import { ref, defineProps, onBeforeMount } from 'vue';
-import StatsView from '@/views/StoreStatsView.vue';
-import MessageView from "@/views/MessageView.vue";
+import StoreStatsList from '@/components/StoreStatsList.vue';
+import MessageList from '@/components/MessageList.vue';
 
 const sidebarItems = [
   { icon: 'mdi-heart', title: 'Lebensmittel freigeben', value: 'share' },

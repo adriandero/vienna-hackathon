@@ -7,9 +7,10 @@ export const state = reactive({
     mode: STORE_OWNER,
     products: [
         {
-            id: 'abcdef',
-            name: "Test",
-            description: "A test product",
+            id: 'mnop78',
+            name: "Grapes",
+            img: null,
+            description: "A nice grapes",
         }
     ],
     readyForPickup: false

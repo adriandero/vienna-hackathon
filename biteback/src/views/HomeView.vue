@@ -1,8 +1,8 @@
 <template>
-  <div v-if="state.mode == DRIVER">
+  <div v-if="state.mode === DRIVER">
     <DriverView></DriverView>
   </div>
-  <div v-else-if="state.mode == STORE_OWNER">
+  <div v-else-if="state.mode === STORE_OWNER">
     <StoreView></StoreView>
   </div>
 </template>

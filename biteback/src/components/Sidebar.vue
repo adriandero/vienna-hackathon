@@ -1,5 +1,5 @@
 <template>
-  <v-navigation-drawer v-model="drawer" floating :temporary="$vuetify.display.mobile">
+  <v-navigation-drawer style="position: fixed;" v-model="drawer" floating :temporary="$vuetify.display.mobile">
     <v-list nav>
       <v-list-item density="comfortable" v-if="!$vuetify.display.mobile">
         <v-img src="/logo.svg"></v-img>
@@ -20,7 +20,7 @@
 
     <template v-slot:append>
       <div class="pa-2">
-        <v-btn color="red-lighten-1" prepend-icon="mdi-logout-variant" variant="tonal" block>Abmelden</v-btn>
+        <v-btn color="red-lighten-1" prepend-icon="mdi-logout-variant" variant="tonal" block @click="state.mode = null;">Abmelden</v-btn>
       </div>
     </template>
   </v-navigation-drawer>
@@ -37,6 +37,7 @@
 </template>
 
 <script setup>
+import { state } from '@/store';
 import { ref, defineProps, onBeforeMount } from 'vue';
 
 const props = defineProps({
