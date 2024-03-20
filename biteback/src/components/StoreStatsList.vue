@@ -71,10 +71,10 @@
                 <v-col cols="12" sm="12" md="6" lg="6">
                     <v-card class="chart-card">
                         <v-card-title>
-                            Anzahl Abholnungen pro Monat
+                            Anzahl Abholungen pro Monat
                         </v-card-title>
                         <v-card-text>
-                            Übersicht der Anzahl an Abhlungen durch Wohltätigkeitsorganisationen
+                            Übersicht der Anzahl an Abholungen durch Wohltätigkeitsorganisationen
                         </v-card-text>
                         <v-divider></v-divider>
                         <v-card-text>

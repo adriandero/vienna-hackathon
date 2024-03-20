@@ -30,9 +30,11 @@ export default {
   },
   methods: {
     trees(){
-        return Math.ceil(this.co2Input / 21)+1;
+        if (this.co2Input == 0) return 0;
+        return Math.ceil(this.co2Input / 21);
     },
     wald(){
+        if (this.co2Input == 0) return 0;
         return Math.ceil(this.co2Input / 225);
     }
   }
