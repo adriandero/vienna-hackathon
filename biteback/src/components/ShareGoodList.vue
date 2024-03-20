@@ -1,7 +1,7 @@
 <template>
   <!-- todo: extract to separate components -->
   <v-dialog v-model="co2dialog">
-    <CO2Calculator :co2="totalCo2"/>
+    <CO2Calculator :co2="totalCo2" />
   </v-dialog>
   <v-dialog v-model="scanDialog">
     <v-card class="align-self-center">
@@ -57,14 +57,14 @@
         <img class="align-self-cente" max-width="80%" max-height="80%" :src="scannedProduct.image_url"></img>
 
         <div>
-          {{ scannedProduct.brands }} {{ scannedProduct.product_name }}
+          {{ scannedProduct.brands ?? '' }} {{ scannedProduct.product_name ?? '<unknown>' }}
         </div>
       </div>
     </v-card>
   </v-dialog>
 
   <v-main>
-    
+
     <div v-if="state.products.length === 0" class="d-flex justify-center align-center h-100">
       <div class="bg-white rounded-lg d-block pa-3 text-center font-weight-bold" style="max-width: 75%;">
         <v-icon size="40" color="red-lighten-1" icon="mdi-gauge-empty"></v-icon>
@@ -98,7 +98,7 @@
       <PickupGoodsToggle class="flex-fill"></PickupGoodsToggle>
       <v-btn class="pa-0 mx-2" density="compact" variant="text" @click="co2dialog = true">
         <span class="text-caption text-grey-darken-3">{{ totalCo2.toFixed(2) }}kg Co₂</span>
-        <v-icon  icon="mdi-help"></v-icon>
+        <v-icon icon="mdi-help"></v-icon>
       </v-btn>
 
       <v-btn color="green-lighten-1" icon="mdi-qrcode-scan" variant="tonal" @click="scanDialog = true"></v-btn>
@@ -132,6 +132,7 @@ function updateTotalCo2() {
 onMounted(() => updateTotalCo2())
 
 codeReader.listVideoInputDevices().then(devices => {
+  console.log(JSON.stringify(devices));
   cameras.value = devices.filter(device => device.kind == "videoinput").map(device => device.label);
   selectedCam.value = cameras.value[0];
 }).catch(error => {
@@ -156,8 +157,15 @@ function startScanning() {
   // TODO: fix dirty fix:
   codeReader.listVideoInputDevices().then(devices => {
     const id = devices.filter(device => device.label === selectedCam.value)[0].deviceId;
-
-    codeReader.decodeFromVideoDevice(id, 'video', (result, error) => {
+    console.log(selectedCam.value)
+    codeReader.decodeOnceFromConstraints({
+      video: {
+        deviceId: id,
+        facingMode: 'environment',
+        focusMode: 'continuous',
+        frameRate: { ideal: 10, max: 15 },
+      }
+    }, 'video', (result, error) => {
       if (result) {
         scanResult.value = result.text;
       }
@@ -165,7 +173,17 @@ function startScanning() {
       if (error && !(error instanceof NotFoundException)) {
         scanResult.value = error
       }
-    })
+    }).catch(error => {
+      codeReader.decodeFromVideoDevice(id, 'video', (result, error) => {
+        if (result) {
+          scanResult.value = result.text;
+        }
+
+        if (error && !(error instanceof NotFoundException)) {
+          scanResult.value = error
+        }
+      })
+    });
   });
 }
 
@@ -176,7 +194,7 @@ function createProduct() {
 
   axios.get('https://world.openfoodfacts.org/api/v0/product/' + scanResult.value + '.json')
     .then(response => {
-      if(response.data.product === undefined) {
+      if (response.data.product === undefined) {
         alert('Produkt nicht in der internationalen Datenbank. Versuche ein anderes Produkt zu scannen.');
         return;
       }
