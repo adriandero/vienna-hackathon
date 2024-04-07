@@ -15,7 +15,7 @@
                 <v-divider thickness="2" class="mb-2"></v-divider>
 
                 <div class="d-flex justify-center flex-xl-row flex-lg-row flex-md-row flex-sm-column flex-column">
-                    <v-card color="red-lighten-1" variant="tonal" class="ma-1">
+                    <v-card color="red-lighten-1" variant="tonal" class="ma-1 flex-grow-1">
                         <v-card-item>
                             <div>
                                 <div class="text-overline mb-1">Rolle</div>
@@ -28,7 +28,7 @@
                             <v-btn @click="state.mode = STORE_OWNER">Testen</v-btn>
                         </v-card-actions>
                     </v-card>
-                    <v-card color="red-lighten-1" variant="tonal" class="ma-1">
+                    <v-card color="red-lighten-1" variant="tonal" class="ma-1 flex-grow-1">
                         <v-card-item>
                             <div>
                                 <div class="text-overline mb-1">Rolle</div>
@@ -39,6 +39,19 @@
 
                         <v-card-actions>
                             <v-btn @click="state.mode = DRIVER">Testen</v-btn>
+                        </v-card-actions>
+                    </v-card>
+                    <v-card color="amber-darken-1" variant="tonal" class="ma-1 flex-grow-1">
+                        <v-card-item>
+                            <div>
+                                <div class="text-overline mb-1">Separat | Schulprojekt</div>
+                                <div class="text-h6 mb-1">PowerBI</div>
+                                <div class="text-caption">Du bist Prof. Niklas? Dann hier lang!</div>
+                            </div>
+                        </v-card-item>
+
+                        <v-card-actions>
+                            <v-btn to="/powerbi">Testen</v-btn>
                         </v-card-actions>
                     </v-card>
                 </div>

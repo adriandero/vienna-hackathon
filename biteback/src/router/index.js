@@ -3,6 +3,7 @@ import { state } from '../store'
 import HomeView from '../views/HomeView.vue'
 import RegisterView from '../views/RegisterView.vue'
 import { watch } from 'vue'
+import PowerBiEmbed from '@/views/PowerBiEmbed.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -24,6 +25,11 @@ const router = createRouter({
         !state.mode ? next() : next({ name: 'home' })
       },
       component: RegisterView
+    },
+    {
+      path: '/powerbi',
+      name: 'powerbi',
+      component: PowerBiEmbed
     }
   ]
 })
